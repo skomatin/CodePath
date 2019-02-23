@@ -35,7 +35,7 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
                 let dataDictionary = try! JSONSerialization.jsonObject(with: data, options: []) as! [String: Any]
                 
                 self.movies = dataDictionary["results"] as! [[String:Any]]
-                print(dataDictionary)
+                //print(dataDictionary)
                 self.mytableView.reloadData()
             }
         }
@@ -64,6 +64,18 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
         return cell
     }
     
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        print("Loading")
+        
+        let cell = sender as! UITableViewCell
+        let indexPath = mytableView.indexPath(for: cell)!
+        let movie = movies[indexPath.row]
+        
+        let detailsViewController = segue.destination as! movieDetailsViewController
+        detailsViewController.movie = movie
+        
+        mytableView.deselectRow(at: indexPath, animated: true)
+    }
     
 }
 
